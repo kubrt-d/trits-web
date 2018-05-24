@@ -84,7 +84,11 @@ function init() {
 
 window.onload = init;
 
-// Arm - one of "F", "S" or "G"
+/* Calculate coin excentricity using ternary trits from the (game) address as shifts
+*
+* @arm - one of "F", "S" or "G"
+* @index - positive integer - coin index in the pile
+* @index - IOTA address 
 
 
 function excentricity(arm, index, key) {
