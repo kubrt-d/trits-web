@@ -6,7 +6,7 @@ function init() {
 
     // create a camera, which defines where we're looking at.
     var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var cdist = 60;
+    var cdist = 30;
     camera.position.x = cdist;
     camera.position.y = -2*cdist;
     camera.position.z = cdist;
@@ -61,10 +61,11 @@ function init() {
     var armsBase = [[-14,-14,0],[14,-14,0],[0,20,0]];
     for (var arm = 0; arm < 3; arm++) {
         for (var j = 0; j < 18; j++ ) {
-            var ex = excentricity(arms[arm],j,'RRRJZNOVAWGUSGCYMMKGMXCOPZSBTFKZXJBZYMWKBRDTBXUIQSFAUVCLSHIPOWLMWXXLPANLS9LT99999');
+            var ex = excentricity(arms[arm],j,'RRRJZNOVAWGUSGCYMMKGMXCOPZSBTFKZXJBZYMWKBRDTBXUIQSFAUVCLSHIPOWLMWXXLPANLS9LT99999',0.2);
+            var ex2 = excentricity(arms[arm],j,'OMJBAVFKFJICOATDXNLVYXPZITONOZVULIKFYLZPCXMJFBTLRJQXLVPADIGWAILIMCBYTKEIDOYAWWROK',0.05);
             var coin = new THREE.Mesh(coinGeometry, coinMaterial);
             coin.rotation.x = -0.5 * Math.PI;
-            coin.position.set(armsBase[arm][0]+ex[0]*ex[2]/3, armsBase[arm][1]+ex[1]*ex[2]/3, j*coinHeight);
+            coin.position.set(armsBase[arm][0]+ex[0]+ex2[0], armsBase[arm][1]+ex[1]+ex2[1], j*coinHeight);
             scene.add(coin);
         }
     }
@@ -89,10 +90,10 @@ window.onload = init;
 * @arm - one of "F", "S" or "G"
 * @index - positive integer - coin index in the pile
 * @index - IOTA address 
+* @offset - Offset distance
+*/
 
-
-function excentricity(arm, index, key) {
-
+function excentricity(arm, index, key, offset ) {
     var TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var keyThird = Math.floor(key.length/3);
     var i = -1;
@@ -105,6 +106,5 @@ function excentricity(arm, index, key) {
     var t0 = (tryte % 3) -1 ;
     var t1 = Math.floor(tryte / 3 ) % 3 -1;
     var t2 = Math.floor(tryte / 9 ) % 3;
-    return [t0 , t1, t2];
-
+    return [offset * t0 * t2 , offset * t0 * t2];
 }
