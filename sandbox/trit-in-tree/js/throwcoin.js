@@ -6,9 +6,10 @@ function init() {
 
     // create a camera, which defines where we're looking at.
     var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = 30;
-    camera.position.y = -120;
-    camera.position.z = 30;
+    var dist = 10;
+    camera.position.x = 3 * dist;
+    camera.position.y = -12 * dist;
+    camera.position.z = 6 * dist;
     camera.up.set( 0, 0, 1 ); // This makes the Z axis to point upwards
     camera.lookAt(scene.position);
 
@@ -42,15 +43,22 @@ function init() {
     // add spotlight for the shadows
     var pointColor = "#ffffff";
     var directionalLight = new THREE.SpotLight(pointColor);
-    directionalLight.position.set(-120, -120, 120);
+    directionalLight.position.set(0, 60, 60);
     directionalLight.castShadow = true;
+    directionalLight.intensity = 1;
+
+
+    var helper = new THREE.CameraHelper( directionalLight.shadow.camera );
+    scene.add( helper );
+
     /*directionalLight.shadow.camera.near = 2;
     directionalLight.shadow.camera.far = 200;
     directionalLight.shadow.camera.left = -50;
     directionalLight.shadow.camera.right = 50;
     directionalLight.shadow.camera.top = 50;
     directionalLight.shadow.camera.bottom = -50;
-*/
+    */
+
     directionalLight.distance = 0;
     directionalLight.intensity = 0.9;
     directionalLight.castShadow = true;
@@ -151,9 +159,10 @@ class Coin {
         this.setRadius(3); // default radius
         this.coinMaterial = new THREE.MeshStandardMaterial({
             color: 0xd4af37,
-            roughness: 0.5,
-            metalness: 1.0,
+            roughness: 0.7,
+            metalness: 1,
         });
+
     }
 
     setRadius(radius) {

@@ -43,7 +43,7 @@ function init() {
 
 
     hammertime.on('press', function(ev) {
-        breaks = setInterval(function(){ slowdown() }, 300);
+        breaks = setInterval(function(){ slowdown() }, 100);
     });
 
 
@@ -158,8 +158,7 @@ function init() {
             tweenSpin.onUpdate(function() {
                 //console.log("tweenSpin.onUpdate called");
                 //console.log(this.rotation);
-
-                rotateAroundWorldAxis(spinner, new THREE.Vector3(0,0,1), 0.3);
+                rotateAroundWorldAxis(spinner, new THREE.Vector3(0,0,1), spinnerSpin * Math.PI/180);
             });
 
             // render the scene
