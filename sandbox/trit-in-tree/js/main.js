@@ -137,14 +137,14 @@ function init_scene(spinner,coinModel) {
     // position and point the camera to the center of the scene
     camera.up.set( 0, 0, 1 );
     camera.position.x = 60;
-    camera.position.y = -120;
-    camera.position.z = 60;
-    /*
+    camera.position.y = -90;
+    camera.position.z = 5;
+    
+    
+    scene.position.x = 0;
+    scene.position.y = 0;
+    scene.position.z = 5;
 
-    camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z = 120;
-*/
     camera.lookAt(scene.position);
 
 
@@ -168,7 +168,7 @@ function init_scene(spinner,coinModel) {
     //var helper = new THREE.DirectionalLightHelper( dl1, 5 );
     //scene.add(helper);
     var dl2 = new THREE.SpotLight(pointColor);
-    dl2.position.set(0, 0, 100);
+    dl2.position.set(60, -60, 20);
     dl2.castShadow = true;
     dl2.angle = Math.PI;
     dl2.intensity = 0.7;
@@ -177,55 +177,46 @@ function init_scene(spinner,coinModel) {
     //var helper = new THREE.DirectionalLightHelper( dl2, 5 );
     //scene.add(helper);
 
-
+    var baseZ = -10;
     //spinner.rotation.x = -0.03* Math.PI;
-    spinner.position.set(0, 0, 0);
-    spinner.castShadow = true;
+    spinner.position.set(0, 0, baseZ);
+    //spinner.castShadow = true;
+    spinner.receiveShadow = true;
     scene.add(spinner);
 
-
-
-    var box = new THREE.Box3().setFromObject( spinner );
-    console.log( box.min, box.max, box.getSize() );
-
+    
     var coinRadius = 12;
     coinModel.setRadius(coinRadius);
-    var coinThickness = 0.18 * coinRadius;
-    var spinnerThickness = 11;
+    var coinThickness = 1.4 * 0.18 * coinRadius;
+    var spinnerThickness = 10;
     var mergedCoins = new THREE.Geometry();
     var coins = [];
     var arms = ['F','S','G','I'];
     var counts = [0,2,3,5];
     var armsBase = [[0,35,spinnerThickness],[-30.3,-17.5,spinnerThickness],[30.3,-17.5,spinnerThickness],[0,0,spinnerThickness]];
+    var modelSimpleCoinGeometry = coinModel.generateSimpleCoinGeometry();
+    var modelCoinGeometry = coinModel.generateCoinGeometry();
+    console.log('Generating coins');
     for (var arm = 0; arm < 4; arm++) {
         for (var j = 0; j <= counts[arm] - 1; j++) {
             if (j < counts[arm] - 1) {
-                var coinGeometry = coinModel.generateSimpleCoinGeometry();
+                var coinGeometry = modelSimpleCoinGeometry.clone();
             } else {
-                var coinGeometry = coinModel.generateCoinGeometry();
+                var coinGeometry = modelCoinGeometry.clone();
+                
             }
-            var ex = excentricity(arms[arm], j, 'RRRJZNOVAWGUSGCYMMKGMXCOPZSBTFKZXJBZYMWKBRDTBXUIQSFAUVCLSHIPOWLMWXXLPANLS9LT99999', 0.5);
-            var ex2 = excentricity(arms[arm], j, 'OMJBAVFKFJICOATDXNLVYXPZITONOZVULIKFYLZPCXMJFBTLRJQXLVPADIGWAILIMCBYTKEIDOYAWWROK', 0.1);
-            coinGeometry.translate(armsBase[arm][0] + ex[0] + ex2[0], armsBase[arm][1] + ex[1] + ex2[1], spinnerThickness + j * coinThickness);
+            var ex = excentricity(arms[arm], j, 'RRRJZNOVAWGUSGCYMMKGMXCOPZSBTFKZXJBZYMWKBRDTBXUIQSFAUVCLSHIPOWLMWXXLPANLS9LT99999', 0.7);
+            var ex2 = excentricity(arms[arm], j, 'OMJBAVFKFJICOATDXNLVYXPZITONOZVULIKFYLZPCXMJFBTLRJQXLVPADIGWAILIMCBYTKEIDOYAWWROK', 0.2);
+            coinGeometry.translate(armsBase[arm][0] + ex[0] + ex2[0], armsBase[arm][1] + ex[1] + ex2[1], baseZ + spinnerThickness + j * coinThickness);
+            console.log('Adding individual coin');
             mergedCoins.merge(coinGeometry);
         }
     }
     var mergedCoinsMesh = new THREE.Mesh(mergedCoins, coinModel.coinMaterial);
+    console.log('Adding coins to the scene');
     scene.add(mergedCoinsMesh);
+    console.log('Coins added');
 
-/*
-    var coin = coinModel.createCoin();
-    coin.position.set(0,35, 11);
-    scene.add(coin);
-
-    var coin2 = coinModel.createCoin();
-    coin2.position.set(-30.3,-17.5, 10, 11);
-    scene.add(coin2);
-
-    var coin3 = coinModel.createCoin();
-    coin3.position.set(30.3, -17.5, 11);
-    scene.add(coin3);
-*/
 
     outputWindow.appendChild(renderer.domElement);
 

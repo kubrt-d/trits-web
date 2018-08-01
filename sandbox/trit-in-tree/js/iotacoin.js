@@ -7,16 +7,21 @@ class IOTACoin {
             roughness: 0.5,
             metalness: 1.0,
         });
+        
     }
 
     setRadius(radius) {
         this.coinRadius = radius;
-        this.coinGeometry = this.generateCoinGeometry();
+        this.coinThickness = 0.18 * this.coinRadius;
+        this.coinHeight = 1.4 * this.coinThickness;
     }
+    
+    
 
     generateCoinGeometry() {
+        
         let iotaLogo = [[1.010675,5.8035,1.3333],[0.288975,6.4334,1.5833],[-0.258252,9.1363,1.9167],[-0.622412,13.4363,2.1667],[-0.896055,18.6758,2.6667],[-1.12482,25.3088,3.0833],[0.854255,10.2774,1.1667],[0.525458,11.4631,1.4167],[0.222082,13.2419,1.5],[-0.084902,15.7233,2],[-0.373166,18.9724,2.25],[-0.639163,23.0502,2.6667],[0.855821,14.2363,1],[0.672247,15.6565,1.1667],[0.4744,17.3305,1.4167],[0.265103,19.0833,1.5833],[0.035418,21.1799,1.9167],[-0.202233,23.6486,2.1667]]
-        let coinThickness = 0.18 * this.coinRadius;
+        let coinThickness = this.coinThickness;
         let logoScale = 0.16 * this.coinRadius;
         let extrudeThickness = coinThickness / 6;
         let bevelThickness = 0.1;
@@ -120,10 +125,12 @@ class IOTACoin {
         logoMesh.scale.set(logoScale, logoScale, logoScale);
 
         // scale and position the logo mesh to jut out of the coin
+        
         logoMesh2.position.z -= (extrudeThickness / 2) * logoScale; // center
         logoMesh2.position.z -= (coinThickness / 2) - 0.4; // offset to edge
         logoMesh2.position.z -= (textThickness / 2) * logoScale; // adjust
         logoMesh2.scale.set(logoScale, logoScale, logoScale);
+        
 
         // assemble the coin geometry out of the constituent geometries/meshes
         let coinGeometry = new THREE.Geometry();
@@ -186,9 +193,5 @@ class IOTACoin {
         coinGeometry.merge(outerRingGeometry);
         //coinGeometry.mergeMesh(outerRingMesh);
         return coinGeometry;
-    }
-
-    createCoin() {
-        return new THREE.Mesh(this.coinGeometry, this.coinMaterial);
     }
 };

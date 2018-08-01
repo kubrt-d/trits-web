@@ -64,7 +64,7 @@ function init() {
     var coinBase = new IOTACoin();
     coinBase.setRadius(8);
     //var coinGeometry = coinBase.generateCoinGeometry();
-    var coin = coinBase.createCoin();
+    var coin = new THREE.Mesh(coinBase.generateCoinGeometry(),coinBase.coinMaterial);
 
     coin.rotation.x = 0; //-0.5 * Math.PI;
     coin.rotation.y -= 0; //3;
@@ -83,7 +83,7 @@ function init() {
         // rotate the cube around its axes
         //line.rotation.x -= 0.03;
         // render using requestAnimationFrame
-        coin.rotation.x -= 0.01;
+        coin.rotation.x -= 0.1;
         requestAnimationFrame(renderScene);
         renderer.render(scene, camera);
     }
