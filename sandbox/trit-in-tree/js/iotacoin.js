@@ -2,8 +2,8 @@ class IOTACoin {
     constructor() {
         this.setRadius(3); // default radius
         this.coinMaterial = new THREE.MeshStandardMaterial({
-            //color: 0xd4af37,
-            color: 0xe4cd81,
+            //color: 0xe4cd81,
+            color: 0xffcb26,
             roughness: 0.5,
             metalness: 1.0,
         });
@@ -27,7 +27,7 @@ class IOTACoin {
         let bevelThickness = 0.1;
         let textThickness = extrudeThickness + bevelThickness;
         let extrudeOptions = {
-            amount: extrudeThickness,
+            depth: extrudeThickness,
             steps: 1,
             curveSegments: 24,
             bevelEnabled: true,
@@ -51,7 +51,7 @@ class IOTACoin {
             arcShape.holes.push(holePath);
 
             var geometry = new THREE.ExtrudeGeometry(arcShape, {
-                amount: height,
+                depth: height,
                 bevelEnabled: false,
                 steps: 1,
                 curveSegments: 64
@@ -63,7 +63,7 @@ class IOTACoin {
         }
 
         var extrudeSettings = {
-            amount: coinThickness * 1.02,
+            depth: coinThickness * 1.02,
             bevelEnabled: false,
             curveSegments: 64
         };
@@ -154,14 +154,14 @@ class IOTACoin {
             arcShape.moveTo(outerRadius * 2, outerRadius);
             arcShape.absarc(outerRadius, outerRadius, outerRadius, 0, Math.PI * 2, false);
 
-            /*
+
             var holePath = new THREE.Path();
             holePath.moveTo(outerRadius + innerRadius, outerRadius);
             holePath.absarc(outerRadius, outerRadius, innerRadius, 0, Math.PI * 2, true);
             arcShape.holes.push(holePath);
-            */
+
             var geometry = new THREE.ExtrudeGeometry(arcShape, {
-                amount: height,
+                depth: height,
                 bevelEnabled: false,
                 steps: 1,
                 curveSegments: 64
@@ -173,7 +173,7 @@ class IOTACoin {
         }
 
         var extrudeSettings = {
-            amount: coinThickness * 1.02,
+            depth: coinThickness * 1.02,
             bevelEnabled: false,
             curveSegments: 64
         };
