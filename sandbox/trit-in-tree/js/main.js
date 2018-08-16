@@ -34,12 +34,7 @@ function TRIT() {
         // Add initial coins
         addCoins(coinModel);
 
-
-
-
         tritOutputWindow.appendChild(tritRenderer.domElement);
-
-
 
         function renderScene(time) {
             // rotate the cube around its axes
@@ -174,7 +169,7 @@ function TRIT() {
 
         tritHammer.on('press', function (ev) {
             breaks = setInterval(function () {
-                slowdown()
+                slowDown()
             }, 100);
         });
 
@@ -200,7 +195,7 @@ function TRIT() {
     }
 
     // Function for an incremental slowdown of the rotation
-    function slowdown() {
+    function slowDown() {
         if (tritSpinningSpeed <= -1) {
             tritSpinningSpeed += 1
         }
@@ -245,7 +240,7 @@ function TRIT() {
         if (debug_mode) console.log(message);
     }
 
-    function load_assets() {
+    function loadAssets() {
         // TODO: load the coin
         var coin_model = new IOTACoin();
         // Load the spinner
@@ -258,8 +253,9 @@ function TRIT() {
             // Here the loaded data is assumed to be an object
             function (obj) {
                 // Add the loaded object to the scene
-                mesh = (obj.children[0].clone());
-                spinnerGeometry = mesh.geometry;
+                var mesh = (obj.children[0].clone());
+                var spinnerGeometry = mesh.geometry;
+
                 var spinnerMaterial = new THREE.MeshPhongMaterial({color: 0xff0000});
                 var spinner_model = new THREE.Mesh(spinnerGeometry, spinnerMaterial);
                 init_scene(spinner_model, coin_model);
@@ -275,7 +271,11 @@ function TRIT() {
         );
     }
 
-    load_assets();
+    function markArms(s) {
+
+    }
+
+    loadAssets();
 }
 
 window.onload = TRIT();
